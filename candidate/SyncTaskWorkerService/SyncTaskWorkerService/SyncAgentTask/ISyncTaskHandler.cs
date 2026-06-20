@@ -1,5 +1,4 @@
 ﻿
-using SyncTaskWorkerService.Models;
 using System.Text.Json;
 
 namespace SyncTaskWorkerService.SyncAgentTask

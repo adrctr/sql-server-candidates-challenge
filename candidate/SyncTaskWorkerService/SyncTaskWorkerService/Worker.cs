@@ -1,9 +1,5 @@
 using SyncTaskWorkerService.CentralPlatformHttpClient;
-using SyncTaskWorkerService.Data;
-using SyncTaskWorkerService.Models;
 using SyncTaskWorkerService.SyncAgentTask;
-using System.Data.Common;
-using System.Runtime.InteropServices;
 
 namespace SyncTaskWorkerService
 {
