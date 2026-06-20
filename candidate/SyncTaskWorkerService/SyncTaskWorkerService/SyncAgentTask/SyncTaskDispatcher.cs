@@ -34,10 +34,10 @@ namespace SyncTaskWorkerService.SyncAgentTask
             {
                 TaskId = task.TaskId,
                 TaskType = task.TaskType,
-                Status = "success",
+                Status = "completed",
                 ExecutedAt = DateTime.UtcNow,
-                RecordCount = data.Count,
-                Data = JsonSerializer.SerializeToElement(data.Data)
+                RecordCount = data.Count(),
+                Data = data.ToList()
             };
         }
 }

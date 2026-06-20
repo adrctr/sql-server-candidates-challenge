@@ -25,10 +25,11 @@ namespace SyncTaskWorkerService
                     //trigger dispatcher to process the task X
                     var result = await syncTaskDispatcher.DispatchAsync(syncTask, ct);
 
-                    // TO DO post result 
+                    //post result
+                    var postResult = await platformHttpClient.PostResultAsync(result, ct);
 
-                    //logger.LogInformation("Tâche {TaskId} traitée : {Status}",
-                    //                      result.TaskId, result.Status);
+                    logger.LogInformation("Task {TaskType} with Id {TaskId} processed with POST status {Status}", result.TaskType, result.TaskId, postResult);
+
                     continue; 
                 }
 

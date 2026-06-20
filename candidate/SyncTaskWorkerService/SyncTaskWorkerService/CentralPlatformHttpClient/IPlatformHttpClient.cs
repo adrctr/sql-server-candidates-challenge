@@ -6,6 +6,6 @@ namespace SyncTaskWorkerService.CentralPlatformHttpClient
     {
         Task<SyncTask?> GetTaskAsync(CancellationToken cancellationToken);
 
-
+        Task<string> PostResultAsync(SyncResult result, CancellationToken cancellationToken);
     }
 }

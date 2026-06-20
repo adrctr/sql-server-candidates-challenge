@@ -20,7 +20,24 @@ namespace SyncTaskWorkerService.CentralPlatformHttpClient
             {
                 return null;
             }
+        }
 
+        public async Task<string> PostResultAsync(SyncResult result, CancellationToken cancellationToken)
+        {
+            HttpContent content = new StringContent(JsonSerializer.Serialize(result, new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            })
+                , System.Text.Encoding.UTF8, "application/json"
+            );
+
+            var response = await _httpClient.PostAsync("/api/sync/result", content, cancellationToken);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return "Failed :" + response.StatusCode;
+            } 
+            return "Accepted";
         }
     }
 }

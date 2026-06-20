@@ -15,7 +15,7 @@ namespace SyncTaskWorkerService.Models
         public string Status { get; set; } = string.Empty;
 
         [JsonPropertyName("data")]
-        public JsonElement? Data { get; set; }
+        public object? Data { get; set; }
 
         [JsonPropertyName("recordCount")]
         public int RecordCount { get; set; }
