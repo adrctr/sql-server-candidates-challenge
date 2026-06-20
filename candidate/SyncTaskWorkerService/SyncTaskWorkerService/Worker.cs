@@ -1,25 +1,39 @@
 using SyncTaskWorkerService.CentralPlatformHttpClient;
 using SyncTaskWorkerService.Data;
+using SyncTaskWorkerService.Models;
+using SyncTaskWorkerService.SyncAgentTask;
 using System.Data.Common;
+using System.Runtime.InteropServices;
 
 namespace SyncTaskWorkerService
 {
-    public class Worker(ILogger<Worker> logger, IConfiguration configuration, IPlatformHttpClient platformHttpClient) : BackgroundService
+    public class Worker(ILogger<Worker> logger, 
+                        IConfiguration configuration, 
+                        IPlatformHttpClient platformHttpClient,
+                        SyncTaskDispatcher syncTaskDispatcher) : BackgroundService
     {
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        protected override async Task ExecuteAsync(CancellationToken ct)
         {
-            while (!stoppingToken.IsCancellationRequested)
+            while (!ct.IsCancellationRequested)
             {
-                if (logger.IsEnabled(LogLevel.Information))
+                var syncTask = await platformHttpClient.GetTaskAsync(ct);
+
+                if (syncTask is not null)
                 {
-                    logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
+                    logger.LogInformation("Task receive : {TaskType}", syncTask.TaskType);
+
+                    //trigger dispatcher to process the task X
+                    var result = await syncTaskDispatcher.DispatchAsync(syncTask, ct);
+
+                    // TO DO post result 
+
+                    //logger.LogInformation("Tâche {TaskId} traitée : {Status}",
+                    //                      result.TaskId, result.Status);
+                    continue; 
                 }
-                //logger.LogInformation($"db connection {configuration.GetValue<string>("SqlServer:ConnectionString")}");
-                var syncTask= await platformHttpClient.GetTaskAsync(stoppingToken);
-                string resulttast = (syncTask != null) ? syncTask.ToString() : "pas de tache en cours";
-                logger.LogInformation($"Task {resulttast}");
-                await Task.Delay(configuration.GetValue<int>("PollingTime"), stoppingToken);
-            }
+
+                await Task.Delay(configuration.GetValue<int>("PollingTime"), ct);
+            }   
         }
     }
 }
