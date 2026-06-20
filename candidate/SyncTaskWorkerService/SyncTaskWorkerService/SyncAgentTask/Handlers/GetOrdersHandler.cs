@@ -61,9 +61,7 @@ namespace SyncTaskWorkerService.SyncAgentTask.Handlers
                 })
                 .ToList();
 
-            var result = connection.Query(sql, new { ModifiedDate = modifiedSince });
-
-            return result;
+            return orders;
         }
     }
 }

@@ -16,7 +16,7 @@ namespace SyncTaskWorkerService.SyncAgentTask.Handlers
 
             var sql = @"
                         SELECT 
-                            p.ProductID AS TotoID,
+                            p.ProductID,
                             p.Name,
                             p.ProductNumber,
                             p.Color,
